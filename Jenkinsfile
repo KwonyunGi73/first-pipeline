@@ -17,7 +17,9 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 script {
-                    // **여기서 $(pwd) 앞의 $에 \를 붙여서 이스케이프합니다.**
+                    // **여기가 수정된 부분입니다: docker.sock 권한을 강제로 변경**
+                    sh "sudo chmod 666 ${DOCKER_HOST_SOCKET}"
+                    // 이제 docker run 명령 실행
                     sh "docker run --rm -v ${DOCKER_HOST_SOCKET}:${DOCKER_HOST_SOCKET} -v \$(pwd):/app -w /app python:3.9-slim-bullseye python3 -m unittest test_app.py"
                 }
             }
