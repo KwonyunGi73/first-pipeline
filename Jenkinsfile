@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script {
                     sh "sudo chmod 666 ${DOCKER_HOST_SOCKET}"
-                    // **여기서 python3 -m unittest test_app.py 부분을 수정합니다.**
-                    sh "docker run --rm -v ${DOCKER_HOST_SOCKET}:${DOCKER_HOST_SOCKET} -v \$(pwd):/app -w /app python:3.9-slim-bullseye python3 -m unittest discover -s /app -p 'test_*.py'"
+                    // **여기서 docker run 명령에 PYTHONPATH 환경 변수 설정을 추가합니다.**
+                    sh "docker run --rm -v ${DOCKER_HOST_SOCKET}:${DOCKER_HOST_SOCKET} -v \$(pwd):/app -w /app -e PYTHONPATH=/app python:3.9-slim-bullseye python3 -m unittest discover -s /app -p 'test_*.py'"
                 }
             }
         }
